@@ -7,11 +7,11 @@ export const createLoginView = ({ onSubmit }) => {
     <form class="auth-form" novalidate>
       <label>
         Identifier (login or email)
-        <input name="identifier" type="text" autocomplete="username" required placeholder="hal9000" />
+        <input name="identifier" type="text" autocomplete="username" required placeholder="email" />
       </label>
       <label>
         Password
-        <input name="password" type="password" autocomplete="current-password" required />
+        <input name="password" type="password" autocomplete="current-password" required placeholder="password" />
       </label>
       <button type="submit">Sign in</button>
       <p class="form-error" data-error hidden></p>
