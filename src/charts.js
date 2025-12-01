@@ -75,6 +75,15 @@ export const createLineChart = (data, { width = 520, height = 220 } = {}) => {
     title.textContent = `${data[idx].label}: ${data[idx].value} XP`;
     circle.appendChild(title);
     svg.appendChild(circle);
+
+    const valueLabel = createSvgElement('text', {
+      x: point.x,
+      y: Math.max(14, point.y - 10),
+      'text-anchor': 'middle',
+      class: 'chart-value-label',
+    });
+    valueLabel.textContent = data[idx].value.toLocaleString();
+    svg.appendChild(valueLabel);
   });
 
   return svg;

@@ -181,6 +181,12 @@ button.ghost {
   fill: #0f172a;
 }
 
+.chart-value-label {
+  fill: #0f172a;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .chart-empty-text {
   fill: var(--muted);
   font-size: 0.9rem;
