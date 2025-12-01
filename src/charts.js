@@ -361,9 +361,9 @@ export const createAuditRatioChart = ({ up = 0, down = 0 }, { width = 520, heigh
     svg.appendChild(fill);
 
     const label = createSvgElement('text', {
-      x: padding - 12,
+      x: padding + 8,
       y: y + barHeight / 2,
-      'text-anchor': 'end',
+      'text-anchor': 'start',
       'dominant-baseline': 'middle',
       class: 'progress-label',
     });
@@ -371,7 +371,7 @@ export const createAuditRatioChart = ({ up = 0, down = 0 }, { width = 520, heigh
     svg.appendChild(label);
 
     const valueLabel = createSvgElement('text', {
-      x: width - padding + 4,
+      x: width - padding - 4,
       y: y + barHeight / 2,
       'text-anchor': 'end',
       'dominant-baseline': 'middle',
