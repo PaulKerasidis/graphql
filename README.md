@@ -5,17 +5,11 @@ A tiny Vite + vanilla JS app that lets you log in to the Zone01 platform, run a 
 ## Requirements
 - Node.js 18+ and npm
 
-## Run It
+## Run It (local)
 1. clone the repo and `cd graphql`
-2. install deps
-   ```bash
-   npm install
-   ```
-3. start the dev server
-   ```bash
-   npm run dev
-   ```
-   Vite prints the local URL (default `http://localhost:5173`).
+2. install deps: `npm install`
+3. start dev server: `npm run dev` (default `http://localhost:5173`)
+   - By default it talks directly to `https://platform.zone01.gr` (no local proxy). If you want to use the Netlify proxy locally, set `VITE_API_BASE=/zone01` and run `netlify dev`.
 
 ## Build It
 ```bash
@@ -32,5 +26,7 @@ The static site lands in `dist/`. You can test that build with `npm run preview`
    netlify deploy     # use --prod to publish
    ```
 The bundled Netlify Function (`netlify/functions/zone01.js`) proxies `/zone01/*` to `https://platform.zone01.gr` and handles OPTIONS so GraphQL works without CORS errors in production.
+
+Production site: https://zone01-pkerasid.netlify.app
 
 Live demo: https://zone01-pkerasid.netlify.app
