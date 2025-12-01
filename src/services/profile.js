@@ -39,6 +39,31 @@ const PROFILE_DASHBOARD_QUERY = `
       createdAt
       objectId
     }
+    skills: transaction(
+      where: { userId: { _eq: $userId }, type: { _like: "skill_%" } }
+      order_by: { amount: desc }
+    ) {
+      id
+      type
+      amount
+      createdAt
+    }
+    auditUp: transaction_aggregate(where: { userId: { _eq: $userId }, type: { _eq: "up" } }) {
+      aggregate {
+        sum {
+          amount
+        }
+      }
+    }
+    auditDown: transaction_aggregate(
+      where: { userId: { _eq: $userId }, type: { _eq: "down" } }
+    ) {
+      aggregate {
+        sum {
+          amount
+        }
+      }
+    }
   }
 `;
 
@@ -73,6 +98,9 @@ export const fetchProfileDataset = async ({ userId, token }) => {
   const xpTransactions = data?.transaction ?? [];
   const progress = data?.progress ?? [];
   const results = data?.result ?? [];
+  const skills = data?.skills ?? [];
+  const auditUp = data?.auditUp?.aggregate?.sum?.amount ?? 0;
+  const auditDown = data?.auditDown?.aggregate?.sum?.amount ?? 0;
 
   let featuredProject = null;
   const highestXp = xpTransactions.reduce(
@@ -89,5 +117,12 @@ export const fetchProfileDataset = async ({ userId, token }) => {
     featuredProject = featured?.object?.[0] ?? null;
   }
 
-  return { xpTransactions, progress, results, featuredProject };
+  return {
+    xpTransactions,
+    progress,
+    results,
+    skills,
+    featuredProject,
+    audits: { up: auditUp, down: auditDown },
+  };
 };

@@ -1,5 +1,15 @@
 export const createProfileView = (
-  { identity, xpSummary, progressSummary, lineChart, donutChart },
+  {
+    identity,
+    xpSummary,
+    progressSummary,
+    skillSummary,
+    lineChart,
+    barChart,
+    radarChart,
+    skillProgressChart,
+    auditChart,
+  },
   { onLogout, onRefresh },
 ) => {
   const section = document.createElement('section');
@@ -11,25 +21,6 @@ export const createProfileView = (
   const passRate = progressSummary.total
     ? Math.round((progressSummary.pass / progressSummary.total) * 100)
     : 0;
-
-  const recentMarkup =
-    progressSummary.recent.length > 0
-      ? progressSummary.recent
-          .map(
-            (item) => `
-                <li>
-                  <div>
-                    <p>${item.name}</p>
-                    <p class="muted">${item.dateLabel}</p>
-                  </div>
-                  <span class="pill ${item.grade >= 1 ? 'success' : 'danger'}">
-                    ${item.grade >= 1 ? 'PASS' : 'FAIL'}
-                  </span>
-                </li>
-              `,
-          )
-          .join('')
-      : '<li class="muted">No recent progress available.</li>';
 
   const xpListMarkup =
     xpSummary.xpByProject.length > 0
@@ -74,33 +65,53 @@ export const createProfileView = (
       </article>
     </div>
 
-    <section class="card">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Statistics</p>
-          <h2>XP progression</h2>
+    <section class="card responsive-grid">
+      <div>
+        <div class="section-heading">
+          <p class="eyebrow">Audits</p>
+          <h2>Done vs Received</h2>
+          <p class="muted">Audit workload balance and ratio</p>
         </div>
+        <div class="chart chart-progress" data-audit-chart></div>
       </div>
-      <div class="chart" data-line-chart></div>
+      <div>
+        <div class="section-heading">
+          <p class="eyebrow">Timeline</p>
+          <h2>XP progression</h2>
+          <p class="muted">Cumulative XP growth across your activity</p>
+        </div>
+        <div class="chart" data-line-chart></div>
+      </div>
     </section>
 
     <section class="card responsive-grid">
       <div>
         <div class="section-heading">
-          <p class="eyebrow">Outcomes</p>
-          <h2>Pass vs Fail</h2>
+          <p class="eyebrow">Projects</p>
+          <h2>XP by project</h2>
+          <p class="muted">Top contributors to your total XP</p>
         </div>
-        <div class="chart" data-donut-chart></div>
+        <div class="chart chart-bar" data-bar-chart></div>
       </div>
       <div>
         <div class="section-heading">
-          <p class="eyebrow">Latest progress</p>
-          <h2>Recent grades</h2>
+          <p class="eyebrow">Skills</p>
+          <h2>Technical radar</h2>
+          <p class="muted">
+            Relative strengths across your top ${skillSummary.topSkills.length || 0} skills
+          </p>
         </div>
-        <ul class="recent-list">
-          ${recentMarkup}
-        </ul>
+        <div class="chart chart-radar" data-radar-chart></div>
       </div>
+    </section>
+
+    <section class="card">
+      <div class="section-heading">
+        <p class="eyebrow">Skills</p>
+        <h2>Depth by skill</h2>
+        <p class="muted">Normalized XP across your leading technologies</p>
+      </div>
+      <div class="chart chart-progress" data-progress-chart></div>
     </section>
 
     <section class="card">
@@ -115,7 +126,10 @@ export const createProfileView = (
   `;
 
   section.querySelector('[data-line-chart]')?.appendChild(lineChart);
-  section.querySelector('[data-donut-chart]')?.appendChild(donutChart);
+  section.querySelector('[data-bar-chart]')?.appendChild(barChart);
+  section.querySelector('[data-radar-chart]')?.appendChild(radarChart);
+  section.querySelector('[data-progress-chart]')?.appendChild(skillProgressChart);
+  section.querySelector('[data-audit-chart]')?.appendChild(auditChart);
 
   section.querySelector('[data-logout]')?.addEventListener('click', () => onLogout?.());
   section.querySelector('[data-refresh]')?.addEventListener('click', () => onRefresh?.());

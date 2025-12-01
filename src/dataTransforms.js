@@ -95,3 +95,37 @@ export const summarizeProgress = (progress = []) => {
     })),
   };
 };
+
+export const summarizeSkills = (skills = []) => {
+  const totals = new Map();
+
+  skills.forEach((item) => {
+    if (!item?.type) return;
+    const label = item.type.replace(/^skill_/, '') || item.type;
+    totals.set(label, (totals.get(label) || 0) + (item.amount || 0));
+  });
+
+  const sorted = Array.from(totals.entries())
+    .map(([label, value]) => ({ label, value }))
+    .sort((a, b) => b.value - a.value);
+
+  const topSkills = sorted.slice(0, 8);
+  const maxValue = topSkills[0]?.value ?? 0;
+
+  return {
+    topSkills,
+    normalized: topSkills.map((skill) => ({
+      ...skill,
+      ratio: maxValue ? skill.value / maxValue : 0,
+    })),
+  };
+};
+
+export const summarizeAudits = ({ up = 0, down = 0 } = {}) => {
+  const ratio = down ? up / down : up ? Infinity : 0;
+  return {
+    up,
+    down,
+    ratio,
+  };
+};

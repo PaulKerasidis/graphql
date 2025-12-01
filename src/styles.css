@@ -192,6 +192,84 @@ button.ghost {
   font-size: 0.9rem;
 }
 
+.chart-bar svg,
+.chart-radar svg {
+  width: 100%;
+  height: 280px;
+}
+.chart-progress svg {
+  width: 100%;
+  height: auto;
+}
+
+.bar-axis {
+  stroke: rgba(15, 23, 42, 0.12);
+  stroke-width: 2;
+}
+
+.bar-rect {
+  fill: var(--accent-light);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.bar-label {
+  fill: var(--muted);
+  font-size: 0.85rem;
+}
+
+.radar-level {
+  stroke: rgba(15, 23, 42, 0.08);
+  fill: none;
+}
+
+.radar-axis {
+  stroke: rgba(15, 23, 42, 0.1);
+  stroke-width: 2;
+}
+
+.radar-shape {
+  fill: var(--accent-light);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.radar-point {
+  fill: white;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.radar-label {
+  fill: #0f172a;
+  font-size: 0.85rem;
+}
+
+.progress-bg {
+  fill: rgba(15, 23, 42, 0.05);
+}
+
+.progress-fill {
+  fill: var(--accent);
+}
+
+.progress-label {
+  fill: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.progress-value {
+  fill: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.chart-aux-text {
+  fill: var(--muted);
+  font-size: 0.85rem;
+}
+
 .responsive-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

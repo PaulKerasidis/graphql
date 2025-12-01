@@ -3,8 +3,20 @@ import { APP_TITLE } from './constants.js';
 import { loadSession, saveSession, clearSession } from './state.js';
 import { signin } from './services/auth.js';
 import { fetchCurrentUser, fetchProfileDataset } from './services/profile.js';
-import { buildIdentitySummary, summarizeXp, summarizeProgress } from './dataTransforms.js';
-import { createLineChart, createDonutChart } from './charts.js';
+import {
+  buildIdentitySummary,
+  summarizeXp,
+  summarizeProgress,
+  summarizeSkills,
+  summarizeAudits,
+} from './dataTransforms.js';
+import {
+  createBarChart,
+  createRadarChart,
+  createProgressChart,
+  createLineChart,
+  createAuditRatioChart,
+} from './charts.js';
 import { createLoginView } from './ui/loginView.js';
 import { createProfileView } from './ui/profileView.js';
 
@@ -65,11 +77,26 @@ const loadDashboard = async () => {
     const identity = buildIdentitySummary(currentUser, dataset.featuredProject);
     const xpSummary = summarizeXp(dataset.xpTransactions);
     const progressSummary = summarizeProgress(dataset.progress);
+    const skillSummary = summarizeSkills(dataset.skills);
+    const auditSummary = summarizeAudits(dataset.audits);
     const lineChart = createLineChart(xpSummary.timeline);
-    const donutChart = createDonutChart(progressSummary.chartData);
+    const barChart = createBarChart(xpSummary.xpByProject.slice(0, 8));
+    const radarChart = createRadarChart(skillSummary.normalized);
+    const skillProgressChart = createProgressChart(skillSummary.normalized);
+    const auditChart = createAuditRatioChart(auditSummary);
 
     const profileView = createProfileView(
-      { identity, xpSummary, progressSummary, lineChart, donutChart },
+      {
+        identity,
+        xpSummary,
+        progressSummary,
+        skillSummary,
+        lineChart,
+        barChart,
+        radarChart,
+        skillProgressChart,
+        auditChart,
+      },
       { onLogout: handleLogout, onRefresh: loadDashboard },
     );
 
