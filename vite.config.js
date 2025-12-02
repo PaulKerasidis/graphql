@@ -1,6 +1,24 @@
 import { defineConfig } from 'vite';
 
-// Set the base to the repo name so GitHub Pages serves assets from /graphql/
+// Vercel deploys to root, so no base path needed
 export default defineConfig({
-  base: '/graphql/',
+  base: '/',
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://platform.zone01.gr',
+        changeOrigin: true,
+        secure: true,
+        configure: (proxy) => {
+          proxy.on('proxyRes', (proxyRes) => {
+            // Remove duplicate CORS headers that cause browser errors
+            const headers = proxyRes.headers['access-control-allow-origin'];
+            if (headers) {
+              proxyRes.headers['access-control-allow-origin'] = '*';
+            }
+          });
+        }
+      }
+    }
+  }
 });
