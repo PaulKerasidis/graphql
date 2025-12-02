@@ -17,16 +17,11 @@ npm run build
 ```
 The static site lands in `dist/`. You can test that build with `npm run preview` or deploy the folder to any static host.
 
-## Deploy to Netlify (with CORS-safe proxy)
-1) Set an env var in your Netlify site: `VITE_API_BASE=/zone01`
-2) Deploy with the Netlify CLI:
-   ```bash
-   npm install -g netlify-cli
-   netlify init       # or link if the site already exists
-   netlify deploy     # use --prod to publish
-   ```
-The bundled Netlify Function (`netlify/functions/zone01.js`) proxies `/zone01/*` to `https://platform.zone01.gr` and handles OPTIONS so GraphQL works without CORS errors in production.
+## Deploy to GitHub Pages
+This repo is configured for Pages with Vite’s `base` set to `/graphql/`.
 
-Production site: https://zone01-pkerasid.netlify.app
+1. Push `main` to GitHub.
+2. Ensure Pages uses GitHub Actions in repo Settings → Pages.
+3. The provided workflow (`.github/workflows/pages.yml`) runs `npm ci`, builds, and publishes `dist/` to Pages on every push to `main`.
 
-Live demo: https://zone01-pkerasid.netlify.app
+Note: The backend at `https://platform.zone01.gr` currently returns invalid CORS headers. You’ll need a proxy or backend fix for auth requests to work from Pages.
